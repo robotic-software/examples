@@ -1,0 +1,63 @@
+{
+    "name": "my_goal_generator",
+    "modules": [
+      "//apps/examples/goal_generator:go_to",
+      "//apps/examples/goal_generator:my_goal_generator",
+      "sight"
+    ],
+    "graph": {
+      "nodes": [
+        {
+          "name": "go_to",
+          "components": [
+            {
+              "name": "message_ledger",
+              "type": "isaac::alice::MessageLedger"
+            },
+            {
+              "name": "GoTo",
+              "type": "isaac::examples::GoTo"
+            }
+          ]
+        },
+        {
+          "name": "my_node",
+          "components": [
+            {
+              "name": "message_ledger",
+              "type": "isaac::alice::MessageLedger"
+            },
+            {
+               "name": "my_component",
+                "type": "isaac::examples::MyGoalGenerator"
+            }
+          ]
+        }
+      ],
+      "edges": [
+              {
+                  "source": "my_node/my_component/my_goal",
+                  "target": "go_to/GoTo/goal"
+              },
+              {
+                  "source": "go_to/GoTo/feedback",
+                  "target": "my_node/my_component/goal_feedback"
+  
+              }	
+      ]
+    },
+    "config": {
+      "go_to" : {
+        "GoTo" : {
+          "tick_period" : "10ms"
+        }
+      },
+          "my_node": {
+              "my_component": {
+                  "desired_location": [9, 25],
+                  "tick_period": "10Hz"
+              }
+          }
+    }
+  }
+  

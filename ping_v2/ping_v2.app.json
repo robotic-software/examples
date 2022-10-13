@@ -1,0 +1,49 @@
+{
+    "name": "ping_v2",
+    "modules": [
+        "//apps/examples/ping_v2:ping_v2_comp"
+      ],
+    "graph": {
+        "nodes": [
+            {
+                "name": "Ping_v2",
+                "components": [
+                    {
+                        "name": "ping_v2",
+                        "type": "Ping_v2"
+                    },
+                    {
+                        "name": "message_ledger",
+                        "type": "isaac::alice::MessageLedger"
+                    }       
+                ]
+            },
+            {
+                "name": "pong",
+                "components": [
+                    {
+                        "name": "pong",
+                        "type": "Pong"
+                    },
+                    {
+                        "name": "message_ledger",
+                        "type": "isaac::alice::MessageLedger"
+                    } 
+                ]
+            }
+        ],
+        "edges": [
+            {
+                "source": "Ping_v2/ping_v2/ping",
+                "target": "pong/pong/trigger"
+            }
+        ]
+    },
+    "config": {
+        "Ping_v2": {
+            "ping_v2": {
+                "tick_period": "10Hz"
+            }
+        }
+    }
+}

@@ -1,0 +1,77 @@
+{
+  "name": "joy",
+  "modules": [
+    "//apps/examples/joy_backend_record:joy_component",
+    "sight",
+		"navigation",
+    "cask"
+  ],
+	"graph": {
+    "nodes": [
+      {
+        "name": "joy",
+        "components": [
+          {
+            "name": "joy_backend_record",
+            "type": "isaac::Joy"
+          },
+
+				  {
+					 	 "name": "message_ledger",
+						 "type": "isaac::alice::MessageLedger"
+					},
+					{
+						"name": "VirtualGamepadBridge",
+						"type": "isaac::navigation::VirtualGamepadBridge"
+					}
+        ]
+      },
+
+      {
+        "name": "recorder",
+        "components": [
+          {
+            "name": "MessageLedger",
+            "type": "isaac::alice::MessageLedger"
+          },
+          {
+            "name": "Recorder",
+            "type": "isaac::cask::Recorder"
+          }
+        ]
+      }
+    ],
+    "edges": [
+			{
+				"source": "websight/WebsightServer/virtual_gamepad",
+				"target": "joy/VirtualGamepadBridge/request"
+			},
+			{
+				"source": "joy/VirtualGamepadBridge/reply",
+				"target": "websight/WebsightServer/virtual_gamepad_reply"
+			},
+      {
+        "source": "joy/VirtualGamepadBridge/joystick",
+        "target": "recorder/Recorder/a"
+      }
+    ]
+  },
+  "config": {
+    "joy" : {
+      "joy_backend_record" : {
+        "message": "My own hello world!",
+        "tick_period" : "50Hz"
+      },
+			"VirtualGamepadBridge": {
+				"tick_period": "100ms"
+			}
+    },
+    "recorder": {
+      "Recorder": {
+        "base_directory": "/tmp/isaac",
+        "tag": "test",
+        "start_recording_automatically": true
+      }
+    }
+  }
+}

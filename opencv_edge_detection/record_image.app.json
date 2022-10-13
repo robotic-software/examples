@@ -1,0 +1,60 @@
+{
+  "name": "record_image",
+  "modules": [
+    "sensors:v4l2_camera",
+    "cask"
+  ],
+  "graph": {
+    "nodes": [
+      {
+        "name": "camera",
+        "components": [
+          {
+            "name": "MessageLedger",
+            "type": "isaac::alice::MessageLedger"
+          },
+          {
+            "name": "V4L2Camera",
+            "type": "isaac::V4L2Camera"
+          }
+        ]
+      },
+      {
+        "name": "recorder",
+        "components": [
+          {
+            "name": "MessageLedger",
+            "type": "isaac::alice::MessageLedger"
+          },
+          {
+            "name": "Recorder",
+            "type": "isaac::cask::Recorder"
+          }
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "source": "camera/V4L2Camera/frame",
+        "target": "recorder/Recorder/a"
+      }
+    ]
+  },
+  "config": {
+    "camera": {
+      "V4L2Camera": {
+        "device_id": 4,
+        "rows": 480,
+        "cols": 640,
+        "rate_hz": 30
+      }
+    },
+	  "recorder": {
+      "Recorder": {
+        "base_directory": "/tmp/isaac",
+        "tag": "camera",
+        "start_recording_automatically": true
+      }
+		}
+  }
+}

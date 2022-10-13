@@ -1,0 +1,93 @@
+{
+  "name": "opencv_edge_detection",
+  "modules": [
+    "//apps/tutorials/opencv_edge_detection:edge_detector",
+    "sight",
+    "viewers",
+    "cask"
+  ],
+  "graph": {
+    "nodes": [
+			{
+        "name": "replay",
+        "components": [
+          {
+            "name": "MessageLedger",
+            "type": "isaac::alice::MessageLedger"
+          },
+          {
+            "name": "Replay",
+            "type": "isaac::cask::Replay"
+          }
+        ]
+      },
+      {
+        "name": "edge_detector",
+        "components": [
+          {
+            "name": "MessageLedger",
+            "type": "isaac::alice::MessageLedger"
+          },
+          {
+            "name": "EdgeDetector",
+            "type": "isaac::opencv::EdgeDetector"
+          }
+        ]
+      },
+      {
+        "name": "viewer",
+        "components": [
+          {
+            "name": "MessageLedger",
+            "type": "isaac::alice::MessageLedger"
+          },
+          {
+            "name": "ImageViewer",
+            "type": "isaac::viewers::ImageViewer"
+          }
+        ]
+      }
+    ],
+    "edges": [
+    
+			{
+        "source": "replay/Replay/a",
+        "target": "edge_detector/EdgeDetector/input_image"
+      },
+      {
+        "source": "edge_detector/EdgeDetector/output_image",
+        "target": "viewer/ImageViewer/image"
+      }			
+    ]
+  },
+  "config": {
+		"replay": {
+      "Replay": {
+    	  "cask_directory": "/home/jcacace/Desktop/isaac-dev/sdk/apps/examples/opencv_edge_detection/455e60d4-4ab6-11ed-a356-0d4cf6e749e0/test",
+      "replay_time_offset": 0,
+      "use_recorded_message_time": true
+	    }
+	  },
+    "websight": {
+      "WebsightServer": {
+        "port": 3000,
+        "ui_config": {
+          "windows": {
+            "Edge Detection": {
+              "renderer": "2d",
+              "dims": {
+                "width": 640,
+                "height": 480
+              },
+              "channels": [
+                {
+                  "name": "opencv_edge_detection/viewer/ImageViewer/image"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

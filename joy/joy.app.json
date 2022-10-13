@@ -1,0 +1,42 @@
+{
+  "name": "joy",
+  "modules": [
+    "sight",
+    "navigation"
+  ],
+  "graph": {
+    "nodes": [
+      {
+        "name": "joy",
+        "components": [
+          {
+            "name": "message_ledger",
+            "type": "isaac::alice::MessageLedger"
+          },
+          {
+            "name": "VirtualGamepadBridge",
+            "type": "isaac::navigation::VirtualGamepadBridge"
+          }
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "source": "websight/WebsightServer/virtual_gamepad",
+        "target": "joy/VirtualGamepadBridge/request"
+      },
+      {
+        "source": "joy/VirtualGamepadBridge/reply",
+        "target": "websight/WebsightServer/virtual_gamepad_reply"
+      }
+    ]
+  },
+  "config": {
+    "joy" : {
+      "VirtualGamepadBridge": {
+        "tick_period": "100ms"
+      }
+    }
+  }
+}
+  

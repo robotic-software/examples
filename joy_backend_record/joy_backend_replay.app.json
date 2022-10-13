@@ -1,0 +1,78 @@
+{
+  "name": "joy",
+  "modules": [
+    "//apps/examples/joy_backend_record:joy_component",
+    "sight",
+		"navigation",
+    "cask"
+  ],
+	"graph": {
+    "nodes": [
+      {
+        "name": "joy",
+        "components": [
+          {
+            "name": "joy_backend_record",
+            "type": "isaac::Joy"
+          },
+
+				  {
+					 	 "name": "message_ledger",
+						 "type": "isaac::alice::MessageLedger"
+					},
+					{
+						"name": "VirtualGamepadBridge",
+						"type": "isaac::navigation::VirtualGamepadBridge"
+					}
+        ]
+      },
+      {
+        "name": "replay",
+        "components": [
+          {
+            "name": "MessageLedger",
+            "type": "isaac::alice::MessageLedger"
+          },
+          {
+            "name": "Replay",
+            "type": "isaac::cask::Replay"
+          }
+        ]
+      }
+    ],
+    "edges": [
+			{
+				"source": "websight/WebsightServer/virtual_gamepad",
+				"target": "joy/VirtualGamepadBridge/request"
+			},
+			{
+				"source": "joy/VirtualGamepadBridge/reply",
+				"target": "websight/WebsightServer/virtual_gamepad_reply"
+			},
+      {
+        "source": "replay/Replay/a",
+        "target": "joy/joy_backend_record/trigger"
+      }
+
+    ]
+  },
+  "config": {
+    "joy" : {
+      "joy_backend_record" : {
+        "message": "My own hello world!",
+        "tick_period" : "50Hz"
+      },
+			"VirtualGamepadBridge": {
+				"tick_period": "100ms"
+			}
+    },
+   
+    "replay": {
+      "Replay": {
+      "cask_directory": "/home/jcacace/Desktop/isaac-dev/sdk/apps/examples/joy_backend_record/543dba0a-4926-11ed-a6e0-c533c34f6eba/test",
+      "replay_time_offset": 0,
+      "use_recorded_message_time": true
+    }
+  }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "name": "ping",
+  "modules": [
+    "//apps/examples/ping:ping_components",
+    "sight"
+  ],
+  "graph": {
+    "nodes": [
+      {
+        "name": "ping",
+        "components": [
+          {
+            "name": "ping",
+            "type": "isaac::Ping"
+          }
+        ]
+      }
+    ],
+    "edges": []
+  },
+  "config": {
+    "ping" : {
+      "ping" : {
+        "message": "Hello world!",
+        "tick_period" : "1Hz"
+      }
+    }
+  }
+}
